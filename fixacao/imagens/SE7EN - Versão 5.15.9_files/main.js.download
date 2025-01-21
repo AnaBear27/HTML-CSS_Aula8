@@ -1,0 +1,195 @@
+$(document).ready(function () {
+    if ($('.select2-basic-single').length) {
+        $('.select2-basic-single').select2();
+    }
+    if ($('#menu li.menuLink').length) {
+        $("#menu li.menuLink").click(function () {
+            $('ul.submenu', this).slideToggle('');
+        });
+        $("#menu li.menuLink").hover(function () {
+            $('#menu li ul.submenu').hide();
+        });
+    }
+    if ($('#ddlista').length) {
+        filtraAlunosLista(1);
+        $("#ddlista").change(function () {
+            filtraAlunosLista(1);
+        });
+    }
+
+    if ($('.cad_alunos_migrados').length) {
+        filtraAlunosListaMigracao(1);
+    }
+
+
+
+    $('[data-toggle="popover"]').popover({
+        trigger: 'hover',
+        placement: 'top',
+        container: 'body'
+    })
+
+    if ($('#btncopialinks').length > 0) {
+        $('#btncopialinks').on('click', function () {
+            copialinks();
+            alert("Links copiados para a área de transferência.");
+        })
+    }
+
+
+});
+
+$(document).on('hidden.bs.modal', '#publicidade_metodo', function (e) {
+    passaPub();
+})
+
+
+function copialinks() {
+    el = document.getElementById("copialinks");
+    el.select();
+    document.execCommand('copy');
+}
+
+var migrando = 0;
+
+
+function clickaaparecebotao() {
+    mostra = false;
+    $(".cbselecionar").each(function () {
+        if ($(this).is(":checked")) {
+            mostra = true;
+        }
+    });
+    if (mostra) {
+        $("#btnAllMetodoToEAD").prop("disabled", false);
+        $("#btnAllmEADToMetodo").prop("disabled", false);
+    } else {
+        $("#btnAllMetodoToEAD").prop("disabled", true);
+        $("#btnAllmEADToMetodo").prop("disabled", true);
+    }
+}
+
+function waitex() {
+    refreshIntervalId = setInterval(function () {
+        if (arrayIds.length == 0) {
+            clearInterval(refreshIntervalId);
+            $("#btnAllMetodoToEAD").prop("disabled", false);
+            $("#btnAllmEADToMetodo").prop("disabled", false);
+            filtraAlunosListaMigracao(1)
+            carregando.style.display = 'none';
+            $("#alertainfo").hide()
+            return true;
+        }
+    }, 500);
+}
+
+function btnAllMetodoToEAD_click() {
+    arrayIds = [];
+    $(".cbselecionar").each(function () {
+        if ($(this).is(":checked")) {
+            id = $(this).attr("id");
+            id = id.split("-");
+            arrayIds.push(id[1]);
+        }
+    }).promise().done(function () {
+        AllmMetodoToEAD(arrayIds);
+    });
+    waitex()
+}
+
+function btnAllmEADToMetodo_click() {
+    arrayIds = [];
+    $(".cbselecionar").each(function () {
+        if ($(this).is(":checked")) {
+            id = $(this).attr("id");
+            id = id.split("-");
+            arrayIds.push(id[1]);
+        }
+    }).promise().done(function () {
+        AllmEADToMetodo(arrayIds);
+    });
+    waitex()
+}
+
+function AllmMetodoToEAD(array) {
+    $("#alertainfo").show()
+    arrayalunos = array
+    if (arrayalunos.length > 0) {
+        idaluno = arrayalunos[0];
+        console.log(idaluno, 'inicio do processo de exportacao');
+        carregando.style.display = 'block';
+        URL_TO_FETCH = 'ajax_php_file.php?exporta_ead=sim&usuario=' + idaluno;
+        try {
+            fetch(URL_TO_FETCH)
+                .then(function (response) {
+                    response.text()
+                        .then(function (result) {
+                            arrayalunos = arrayRemove(arrayalunos, idaluno);
+                            console.log(idaluno, 'fim do processo de exportacao');
+                            console.log(arrayalunos);
+                            AllmMetodoToEAD(arrayalunos)
+                        })
+                })
+                .catch(function (err) {
+                    arrayalunos = arrayRemove(arrayalunos, id_aluno);
+                    console.error(err);
+                    AllmMetodoToEAD(arrayalunos)
+                });
+        } catch (error) {
+            arrayalunos = arrayRemove(arrayalunos, id_aluno);
+        }
+    } else {
+        arrayIds = [];
+    }
+}
+
+function AllmEADToMetodo(array) {
+    console.log(array)
+    $("#alertainfo").show()
+    arrayalunos = array
+    if (arrayalunos.length > 0) {
+        idaluno = arrayalunos[0];
+        console.log(idaluno, 'inicio do processo de importacao');
+        carregando.style.display = 'block';
+        URL_TO_FETCH = 'ajax_php_file.php?importa_ead=sim&usuario=' + idaluno;
+        try {
+            fetch(URL_TO_FETCH)
+                .then(function (response) {
+                    response.text()
+                        .then(function (result) {
+                            arrayalunos = arrayRemove(arrayalunos, idaluno);
+                            console.log(idaluno, 'fim do processo de importacao');
+                            AllmEADToMetodo(arrayalunos)
+                        })
+                })
+                .catch(function (err) {
+                    arrayalunos = arrayRemove(arrayalunos, id_aluno);
+                    console.error(err);
+                });
+        } catch (error) {
+            arrayalunos = arrayRemove(arrayalunos, id_aluno);
+        }
+    } else {
+        arrayIds = [];
+    }
+}
+
+function arrayRemove(arr, value) {
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
+}
+
+$(document).ready(function () {
+    $(document).on("click", '#btnAllMetodoToEAD', function (event) {
+        btnAllMetodoToEAD_click()
+    });
+
+    $(document).on("click", '.cbselecionar', function (event) {
+        clickaaparecebotao()
+    });
+
+    $(document).on("click", '#btnAllmEADToMetodo', function (event) {
+        btnAllmEADToMetodo_click()
+    });
+});

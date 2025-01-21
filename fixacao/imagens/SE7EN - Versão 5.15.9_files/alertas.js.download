@@ -1,0 +1,53 @@
+function jAlert(mensagem, titulo, callback, tipo) {
+
+    var ver = getInternetExplorerVersion();
+
+    if (ver == '-1' || ver > '9') {
+        setTimeout(function () {
+            swal({
+                title: titulo,
+                html: mensagem,
+                type: tipo,
+                allowOutsideClick: false
+            }).then(function (result) {
+                if (callback) {
+                    callback(result);
+                }
+            });
+        }, 200);
+
+    } else {
+        alert(mensagem);
+        callback(callback);
+    }
+
+}
+
+function jConfirm(mensagem, titulo, callback, tipo) {
+    var ver = getInternetExplorerVersion();
+
+    if (ver == '-1' || ver > '9') {
+        setTimeout(function () {
+            swal({
+                title: titulo,
+                html: mensagem,
+                type: tipo,
+                showCancelButton: true,
+                allowOutsideClick: false
+            }).then(function (result) {
+                if (callback) {
+                    callback(result);
+                }
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {
+
+                }
+            });
+        }, 200);
+    } else {
+        if (confirm(mensagem)) {
+            callback(callback);
+        }
+    }
+
+}

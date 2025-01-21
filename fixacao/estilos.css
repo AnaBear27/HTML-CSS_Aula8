@@ -1,0 +1,38 @@
+*{margin: 0; padding: 0; list-style: none; text-decoration: none;}
+body{background: #000000;}
+
+/*HEADER*/
+#header{position: relative;}
+#area-header{width: 400px; height: 60px; margin: auto; background: #59007c;}
+nav{width: 500px; float: center;}
+nav a{color: #000; font: normal 14px verdana; margin: 10px; line-height: 60px;}
+nav a:hover{color: yellow;}
+#fixa-banner{width: 100%; height: 60px; clear: both;}
+
+/*BANNER*/
+#banner{width: 100%; height: 400px; position: relative; background: url(../fixacao/imagens/banner-principal.jpg) no-repeat center; background-size: cover; background-position: center;}
+#ajusta-texto h1{font: normal 20px arial; color: #ffffff; text-align: center; float: center; padding: 130px;}
+#alinhamento{font: normal 50px arial; color: #ffffff; text-align: center; float: center; padding: 130px;}
+
+/*DESTAQUES*/
+.container{width: 1000px; height: 1000px; background: #CCCCCC; margin: auto; padding-top: 1px;}
+#destaques{float: left; margin: 60px 0 0 15px; position: relative;}
+.ajuste-texto-destaque1{width: 90px; height: 39px; background: #A0B1C3; font: normal 14px arial; color: #000; float: center; text-align: center; padding: 0 105px 0;}
+.ajuste-texto-destaque2{width: 90px; height: 39px; background: #DD84FF; font: normal 14px arial; color: #000; float: center; text-align: center; padding: 0 105px 0;}
+.ajuste-texto-destaque3{width: 90px; height: 39px; background: #FFFF99; font: normal 14px arial; color: #000; float: center; text-align: center; padding: 0 105px 0;}
+
+/*SHOWS*/
+.shows{width: 300px; height: 246px; background: #59007c; float: left; margin: 50px 0 0 15px; position: relative;}
+.shows h1{width: 100%; font: bold normal 22px arial; text-align: left; color: yellow; margin: 5px;}
+.shows h4{width: 100%; font: normal 18px arial; color: #FFF; margin: 5px;}
+#linha-dashed{clear: both; width: 100%; height: 4px; display: block; border-bottom: 2px dashed yellow; margin: 5px 0;}
+.shows p{width: 100%; font: normal 14px verdana; margin: 15px 10px; color: #FFF;}
+.shows p+p{text-align: left; margin: 8px;}
+
+/*EVENTOS*/
+#eventos h1{width: 100%; font: normal 24px arial; text-align: center; margin: 5px; padding-bottom: 10px;}
+.ajuste-evento{width: 800px; height: 400px; padding: 0 90px;}
+.ajustar-eventos{width: 100%; font: bold normal 22px arial; color: yellow; text-align: center; background: #59007c;}
+
+/*FOOTER*/
+#footer{width: 100%; height: 400px; position: relative; background: url(../fixacao/imagens/banner-final.jpg) no-repeat center; background-size: cover; background-position: center;}
